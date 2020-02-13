@@ -495,7 +495,9 @@ func (h *BitbucketServerWebhook) Upsert(every time.Duration) {
 		for _, e := range es {
 			c, _ := e.Configuration()
 			con, ok := c.(*schema.BitbucketServerConnection)
-			if !ok || con.Webhooks == nil {
+			if !ok || con.Plugin == nil ||
+				con.Plugin.Webhooks == nil ||
+				con.Plugin.Webhooks.Automation != "enabled" {
 				continue
 			}
 
@@ -511,7 +513,7 @@ func (h *BitbucketServerWebhook) Upsert(every time.Duration) {
 				Scope:    "global",
 				Events:   []string{"pr"},
 				Endpoint: endpoint,
-				Secret:   con.Webhooks.Secret,
+				Secret:   con.Plugin.Webhooks.Secret,
 			}
 
 			err = client.UpsertWebhook(context.Background(), wh)
@@ -558,10 +560,12 @@ func (h *BitbucketServerWebhook) parseEvent(r *http.Request) (interface{}, *http
 	for _, e := range es {
 		c, _ := e.Configuration()
 		hook, ok := c.(*schema.BitbucketServerConnection)
-		if !ok || hook.Webhooks == nil {
+		if !ok || hook.Plugin == nil ||
+			hook.Plugin.Webhooks == nil ||
+			hook.Plugin.Webhooks.Automation != "enabled" {
 			continue
 		}
-		secrets = append(secrets, []byte(hook.Webhooks.Secret))
+		secrets = append(secrets, []byte(hook.Plugin.Webhooks.Secret))
 	}
 
 	sig := r.Header.Get("X-Hub-Signature")
