@@ -64,7 +64,7 @@ export class SiteAdminPingsPage extends React.Component<Props, State> {
                         navigation, code review, saved searches, diff searches)
                     </li>
                     <li>
-                        Aggregate daily, weekly, and monthly latencies (in ms) of certain events (e.g., hover tooltips)
+                        Aggregate daily, weekly, and monthly latencies (in ms) of certain events (e.g., hover tooltips and search queries)
                     </li>
                     <li>Aggregate daily, weekly, and monthly total counts of certain events (e.g., hover tooltips)</li>
                     <li>Total count of Automation campaigns created</li>
