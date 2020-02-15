@@ -206,22 +206,22 @@ type SearchLatencyStatistics struct {
 	Monthly []*SearchLatencyPeriod
 }
 
-type SearchEventCategoryStatistics struct {
-	Literal    *SearchLatencyPeriod
-	Regexp     *SearchLatencyPeriod
-	Structural *SearchLatencyPeriod
-	File       *SearchLatencyPeriod
-	Repo       *SearchLatencyPeriod
-	Diff       *SearchLatencyPeriod
-	Commit     *SearchLatencyPeriod
-}
-
 type SearchLatencyPeriod struct {
-	StartTime      time.Time
-	EventLatencies *SearchEventLatencies
+	StartTime time.Time
+	Latencies *SearchTypeLatency
 }
 
-type SearchEventLatencies struct {
+type SearchTypeLatency struct {
+	Literal    *SearchLatency
+	Regexp     *SearchLatency
+	Structural *SearchLatency
+	File       *SearchLatency
+	Repo       *SearchLatency
+	Diff       *SearchLatency
+	Commit     *SearchLatency
+}
+
+type SearchLatency struct {
 	P50 float64
 	P90 float64
 	P99 float64
