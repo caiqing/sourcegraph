@@ -104,6 +104,20 @@ func getAndMarshalCodeIntelUsageJSON(ctx context.Context) (*json.RawMessage, err
 	return &message, nil
 }
 
+func getAndMarshalSearchLatencyJSON(ctx context.Context) (*json.RawMessage, error) {
+	days, weeks, months := 1, 1, 1
+	searchLatency, err := usagestats.GetSearchLatencyStatistics(ctx, days, weeks, months)
+	if err != nil {
+		return nil, err
+	}
+	contents, err := json.Marshal(searchLatency)
+	if err != nil {
+		return nil, err
+	}
+	message := json.RawMessage(contents)
+	return &message, nil
+}
+
 func getAndMarshalAutomationUsageJSON(ctx context.Context) (*json.RawMessage, error) {
 	automationUsage, err := usagestats.GetAutomationUsageStatistics(ctx)
 	if err != nil {
